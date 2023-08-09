@@ -16,6 +16,15 @@ const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListId'
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || []
 let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY)
 
+async function getLists(){
+  let response = await fetch('http://nas.fritz.box:8300/todo/lists');
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+getLists().then(data => console.log(data));
+
 listsContainer.addEventListener('click', e => {
   if (e.target.tagName.toLowerCase() === 'li') {
     selectedListId = e.target.dataset.listId
@@ -51,12 +60,14 @@ newListForm.addEventListener('submit', e => {
   if (listName == null || listName === '') return
   const list = createList(listName)
   //api call
-  let request = new XMLHttpRequest();
-  request.open("POST",)
+
+  // do something with myJson
   newListInput.value = null
   lists.push(list)
   saveAndRender()
 })
+
+
 
 newTaskForm.addEventListener('submit', e => {
   e.preventDefault()
